@@ -17,7 +17,7 @@ import { ModificationMedecinComponent } from './pages/modification-medecin/modif
     AppComponent,
     MainPageComponent,
     TableMedecinComponent,
-    ModificationMedecinComponent
+    ModificationMedecinComponent,
   ],
   imports: [
     CommonModule,

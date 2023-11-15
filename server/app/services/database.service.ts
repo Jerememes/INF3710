@@ -4,6 +4,7 @@ import "reflect-metadata";
 
 @injectable()
 export class DatabaseService {
+
   public connectionConfig: pg.ConnectionConfig = {
     user: "postgres",
     database: "TP4",
@@ -14,4 +15,16 @@ export class DatabaseService {
   };
 
   public pool: pg.Pool = new pg.Pool(this.connectionConfig);
+
+  public async query(sql: string, params?: any[]): Promise<any> {
+    try {
+      const client = await this.pool.connect();
+      const result = await client.query(sql, params);
+      client.release();
+      return result.rows;
+    } catch (err) {
+      console.error('Database query error', err);
+      throw err;
+    }
+  }
 }

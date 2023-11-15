@@ -12,6 +12,16 @@ export class DatabaseController {
 
   public get router(): Router {
     const router: Router = Router();
+
+    router.get('/medecins', async (req, res) => {
+      try {
+        const medecins = await this.databaseService.query('SELECT * FROM Medecins');
+        res.json(medecins);
+      } catch (err) {
+        res.status(500).send({ message: 'Error fetching data', error: err.message });
+      }
+    });
+
     return router;
   }
 }

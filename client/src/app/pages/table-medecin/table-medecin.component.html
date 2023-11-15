@@ -1,1 +1,18 @@
-<p>table-medecin works!</p>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Prénom</th>
+    <th>Nom</th>
+    <th>Spécialité</th>
+    <th>Années d'expérience</th>
+    <th>Id services</th>
+  </tr>
+  <tr *ngFor="let medecin of medecins">
+    <td>{{ medecin.idmedecin }}</td>
+    <td>{{ medecin.prenom }}</td>
+    <td>{{ medecin.nom }}</td>
+    <td>{{ medecin.specialite }}</td>
+    <td>{{ medecin.anneesexperience }}</td>
+    <td>{{ medecin.idservice }}</td>
+  </tr>
+</table>
