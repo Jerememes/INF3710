@@ -8,10 +8,16 @@ import { AppComponent } from "./app.component";
 import { CommunicationService } from "./services/communication.service";
 import { AppMaterialModule } from './modules/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { TableMedecinComponent } from './pages/table-medecin/table-medecin.component';
+import { ModificationMedecinComponent } from './pages/modification-medecin/modification-medecin.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainPageComponent,
+    TableMedecinComponent,
+    ModificationMedecinComponent
   ],
   imports: [
     CommonModule,
