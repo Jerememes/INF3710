@@ -1,0 +1,22 @@
+{
+  "folders": [
+      {
+          "path": "."
+      },
+      {
+          "path": "./client"
+      },
+      {
+          "path": "./server"
+      },
+      {
+          "path": "./common"
+      },
+      {
+          "path": "./database"
+      }
+  ],
+  "settings": {
+      "cSpell.words": ["Informations", "restant"]
+  }
+}
