@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MedecinService } from '../../services/medecin.service';
 import { Doctor } from '../../interfaces/doctor.interface';
 import { Service } from '../../interfaces/service.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-form',
@@ -61,37 +61,28 @@ export class DoctorFormComponent {
   constructor(
     private fb: FormBuilder,
     private medecinService: MedecinService,
-    private route: ActivatedRoute,
     private router: Router,
   ) {
     this.doctorForm = this.fb.group({
-      prenom: ['', [Validators.required]],
-      nom: ['', [Validators.required]],
-      specialite: ['', [Validators.required]],
+      prenom: [this.doctorData?.prenom, [Validators.required]],
+      nom: [this.doctorData?.nom, [Validators.required]],
+      specialite: [this.doctorData?.specialite, [Validators.required]],
       anneesexperience: [0, [Validators.required, Validators.min(0)]],
       idservice: [this.services.length > 0 ? this.services[0].idservice : null, [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-    this.route.url.subscribe((segments) => {
-      const isCreationMode = segments.some((segment) => segment.path === 'creation-medecin');
-      if (isCreationMode) {
-        this.doctorData = null;
-      }
+    this.medecinService.getServices().subscribe((services: Service[]) => {
+      this.services = services;
       
       if (this.doctorData) {
         this.doctorForm.patchValue(this.doctorData);
+      } else {
+        this.doctorForm.patchValue({
+          idservice: services.length > 0 ? services[0].idservice : null
+        });
       }
-
-      this.medecinService.getServices().subscribe((services: Service[]) => {
-        this.services = services;
-        if (!this.doctorData) {
-          this.doctorForm.patchValue({
-            idservice: services.length > 0 ? services[0].idservice : null
-          });
-        }
-      });
     });
   }
 
