@@ -16,20 +16,16 @@ export class TableMedecinComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.medecinService.getMedecins().subscribe((data: any[]) => {
-      this.medecins = data;
-    },
-    error => {
-      console.error('Error fetching medecins', error);
+    this.medecinService.getMedecins().subscribe({
+    next: (data) => this.medecins = data,
+    error: (error) => console.error('Error fetching "medecins"', error)
     });
   }
 
   deleteMedecin(id: number) {
-    this.medecinService.deleteMedecin(id).subscribe(() => {
-      this.medecins = this.medecins.filter(medecin => medecin.idmedecin !== id);
-    },
-    error => {
-      console.error('Error deleting medecin', error);
+    this.medecinService.deleteMedecin(id).subscribe({
+    next: () => this.medecins = this.medecins.filter(medecin => medecin.idmedecin !== id),
+    error: (error) => console.error('Error deleting medecin', error)
     });
   }
 

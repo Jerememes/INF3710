@@ -11,7 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent {
-  @Input() doctorData: Doctor | null = null;
+  @Input() doctorData: Doctor = {
+    prenom: "Prénom",
+    nom: "Nom",
+    specialite: "Spécialité",
+    anneesexperience: 999,
+    idservice: 999,
+  };
 
   doctorForm: FormGroup;
   specialities: string[] = ['Dermatologie', 'Neurologie', 'Ophtalmologie', 'Orthopédie', 'Psychiatrie', 'Cardiologie', 'Pédiatrie', 'Chirurgie', 'Gynécologie', 'Radiologie'];
