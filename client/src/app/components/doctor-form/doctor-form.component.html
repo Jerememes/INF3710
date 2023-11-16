@@ -1,0 +1,16 @@
+<form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+  <input formControlName="prenom" placeholder="Prénom" type="text">
+  <input formControlName="nom" placeholder="Nom" type="text">
+  
+  <select formControlName="specialite">
+    <option *ngFor="let speciality of specialities" [value]="speciality">{{ speciality }}</option>
+  </select>
+  
+  <input formControlName="anneesexperience" placeholder="Années d'expérience" type="number">
+  
+  <select formControlName="idservice">
+    <option *ngFor="let service of services" [value]="service.idservice">{{service.idservice}} - {{ service.nomservice }}</option>
+  </select>
+
+  <button type="submit">Add Doctor</button>
+</form>

@@ -6,6 +6,7 @@
     <th>Spécialité</th>
     <th>Années d'expérience</th>
     <th>Id services</th>
+    <th>Actions</th>
   </tr>
   <tr *ngFor="let medecin of medecins">
     <td>{{ medecin.idmedecin }}</td>
@@ -14,5 +15,9 @@
     <td>{{ medecin.specialite }}</td>
     <td>{{ medecin.anneesexperience }}</td>
     <td>{{ medecin.idservice }}</td>
+    <td>
+      <button class="modify-btn" (click)="modifyMedecin(medecin)">Modifier</button>
+      <button class="delete-btn" (click)="deleteMedecin(medecin.idmedecin)">Supprimer</button>
+    </td>
   </tr>
 </table>

@@ -10,14 +10,16 @@ import { AppMaterialModule } from './modules/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { TableMedecinComponent } from './pages/table-medecin/table-medecin.component';
-import { ModificationMedecinComponent } from './pages/modification-medecin/modification-medecin.component';
+import { CreationMedecinComponent } from './pages/creation-medecin/creation-medecin.component';
+import { DoctorFormComponent } from './components/doctor-form/doctor-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
     TableMedecinComponent,
-    ModificationMedecinComponent,
+    CreationMedecinComponent,
+    DoctorFormComponent,
   ],
   imports: [
     CommonModule,

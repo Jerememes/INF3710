@@ -19,4 +19,22 @@ export class TableMedecinComponent implements OnInit {
       console.error('Error fetching medecins', error);
     });
   }
+
+  deleteMedecin(id: number) {
+    this.medecinService.deleteMedecin(id).subscribe(() => {
+      this.medecins = this.medecins.filter(medecin => medecin.idmedecin !== id);
+    },
+    error => {
+      console.error('Error deleting medecin', error);
+    });
+  }
+
+  updateMedecin(id: number) {
+    this.medecinService.updateMedecin(id).subscribe(() => {
+      this.medecins = this.medecins.filter(medecin => medecin.idmedecin !== id);
+    },
+    error => {
+      console.error('Error updating medecin', error);
+    });
+  }
 }

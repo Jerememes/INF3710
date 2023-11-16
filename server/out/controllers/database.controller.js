@@ -43,6 +43,74 @@ let DatabaseController = class DatabaseController {
                 res.status(500).send({ message: 'Error fetching data', error: err.message });
             }
         }));
+        function getNextIdMedecin(databaseService) {
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    const idResult = yield databaseService.query('SELECT idMedecin FROM Medecins ORDER BY idMedecin DESC LIMIT 1');
+                    console.log('idResult:', idResult);
+                    if (idResult.length > 0) {
+                        const maxId = idResult[0].idmedecin;
+                        const uniqueId = maxId + 1;
+                        return uniqueId;
+                    }
+                    else {
+                        return 1;
+                    }
+                }
+                catch (error) {
+                    console.error('Error generating unique id for Medecin:', error);
+                    throw error;
+                }
+            });
+        }
+        router.post('/medecins', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { prenom, nom, specialite, anneesexperience, idservice } = req.body;
+            let newId = yield getNextIdMedecin(this.databaseService);
+            try {
+                const insertResult = yield this.databaseService.query(`INSERT INTO Medecins (idMedecin, prenom, nom, specialite, anneesExperience, idService) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`, [newId, prenom, nom, specialite, anneesexperience, idservice]);
+                return res.status(201).json(insertResult.rows[0]);
+                if (insertResult.rows.length > 0) {
+                    return res.status(201).json(insertResult.rows[0]);
+                }
+            }
+            catch (err) {
+                if (err.code === '23505') { // Duplicate key error code
+                    return res.status(500).send({ message: 'Error inserting data: Duplicate key constraint violated' });
+                }
+                else {
+                    return res.status(500).send({ message: 'Error inserting data', error: err.message });
+                }
+            }
+        }));
+        router.delete('/medecins/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                const result = yield this.databaseService.query(`DELETE FROM Medecins WHERE idmedecin = ${id}`);
+                res.json(result);
+            }
+            catch (err) {
+                res.status(500).send({ message: 'Error deleting data', error: err.message });
+            }
+        }));
+        router.put('/medecins/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                const result = yield this.databaseService.query(`UPDATE Medecins SET idservice = 0 WHERE idmedecin = ${id}`);
+                res.json(result);
+            }
+            catch (err) {
+                res.status(500).send({ message: 'Error updating data', error: err.message });
+            }
+        }));
+        router.get('/services', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const services = yield this.databaseService.query('SELECT * FROM Services');
+                res.json(services);
+            }
+            catch (err) {
+                res.status(500).send({ message: 'Error fetching data', error: err.message });
+            }
+        }));
         return router;
     }
 };
