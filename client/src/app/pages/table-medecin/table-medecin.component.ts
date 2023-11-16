@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; // Import the Router service
+import { Router } from '@angular/router';
 import { MedecinService } from '../../services/medecin.service';
+import { Doctor } from 'src/app/interfaces/doctor.interface';
 
 @Component({
   selector: 'app-table-medecin',
@@ -8,7 +9,9 @@ import { MedecinService } from '../../services/medecin.service';
   styleUrls: ['./table-medecin.component.css']
 })
 export class TableMedecinComponent implements OnInit {
-  medecins: any[] = [];
+  medecins: Doctor[] = [];
+  currentSortKey: string | null = null;
+sortAscending: boolean = true;
 
   constructor(
     private medecinService: MedecinService,
@@ -31,5 +34,25 @@ export class TableMedecinComponent implements OnInit {
 
   updateMedecin(id: number) {
     this.router.navigate(['modify-medecin', id]);
+  }
+
+  sortByKey(key: keyof Doctor): void {
+    if (this.currentSortKey === key) {
+      this.sortAscending = !this.sortAscending;
+    } else {
+      this.currentSortKey = key;
+      this.sortAscending = true;
+    }
+    this.medecins.sort((a, b) => {
+      const aVal = a[key];
+      const bVal = b[key];
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        return aVal.localeCompare(bVal) * (this.sortAscending ? 1 : -1);
+      } else if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return (aVal - bVal) * (this.sortAscending ? 1 : -1);
+      } else {
+        return 0;
+      }
+    });
   }
 }
