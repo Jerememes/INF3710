@@ -1,23 +1,28 @@
-<table>
-  <tr>
-    <th>Id</th>
-    <th>Prénom</th>
-    <th>Nom</th>
-    <th>Spécialité</th>
-    <th>Années d'expérience</th>
-    <th>Id services</th>
-    <th>Actions</th>
-  </tr>
-  <tr *ngFor="let medecin of medecins">
-    <td>{{ medecin.idmedecin }}</td>
-    <td>{{ medecin.prenom }}</td>
-    <td>{{ medecin.nom }}</td>
-    <td>{{ medecin.specialite }}</td>
-    <td>{{ medecin.anneesexperience }}</td>
-    <td>{{ medecin.idservice }}</td>
-    <td>
-      <button class="modify-btn" (click)="updateMedecin(medecin.idmedecin)">Modifier</button>
-      <button class="delete-btn" (click)="deleteMedecin(medecin.idmedecin)">Supprimer</button>
-    </td>
-  </tr>
-</table>
+<div>
+  <div class="center-container">
+    <a class="nav-item nav-link active btn create-doctor-btn" routerLink="/creation-medecin">Créer un médecin</a>
+  </div>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Spécialité</th>
+      <th>Années d'expérience</th>
+      <th>Id services</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let medecin of medecins">
+      <td>{{ medecin.idmedecin }}</td>
+      <td>{{ medecin.prenom }}</td>
+      <td>{{ medecin.nom }}</td>
+      <td>{{ medecin.specialite }}</td>
+      <td>{{ medecin.anneesexperience }}</td>
+      <td>{{ medecin.idservice }}</td>
+      <td>
+        <button class="modify-btn" (click)="updateMedecin(medecin.idmedecin)">Modifier</button>
+        <button class="delete-btn" (click)="deleteMedecin(medecin.idmedecin)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+</div>

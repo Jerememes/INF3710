@@ -3,9 +3,10 @@ table {
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 0.9em;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ddd;
 }
 
 th {
@@ -13,6 +14,8 @@ th {
   color: white;
   text-align: left;
   padding: 12px 15px;
+  font-size: 1.1em;
+  border-bottom: 2px solid #006f5a;
 }
 
 td {
@@ -24,7 +27,7 @@ tr:nth-of-type(even) {
 }
 
 tr:hover {
-  background-color: #f1f1f1;
+  background-color: #eaeaea;
 }
 
 th {
@@ -63,6 +66,7 @@ th {
     float: left;
     font-weight: bold;
     text-transform: uppercase;
+    margin-right: 10px;
   }
 
   table td:last-child {
@@ -78,6 +82,7 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: bold;
+  font-size: 0.9em;
 }
 
 button.modify-btn {
@@ -96,4 +101,28 @@ button.delete-btn {
 
 button.delete-btn:hover {
   background-color: #c82333;
+}
+
+.btn.create-doctor-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 15px 15px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn.create-doctor-btn:hover {
+  background-color: #218838;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
