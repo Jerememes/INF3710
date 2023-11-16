@@ -17,6 +17,10 @@ export class MedecinService {
     return this.http.get(this.apiUrl);
   }
 
+  getMedecinById(id: number): Observable<Doctor> {
+    return this.http.get<Doctor>(`${this.apiUrl}/${id}`);
+  }
+
   addMedecin(medecin: Doctor): Observable<Doctor> {
     return this.http.post<Doctor>(this.apiUrl, medecin);
   }

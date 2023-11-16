@@ -16,7 +16,7 @@
     <td>{{ medecin.anneesexperience }}</td>
     <td>{{ medecin.idservice }}</td>
     <td>
-      <button class="modify-btn" (click)="modifyMedecin(medecin)">Modifier</button>
+      <button class="modify-btn" (click)="updateMedecin(medecin.idmedecin)">Modifier</button>
       <button class="delete-btn" (click)="deleteMedecin(medecin.idmedecin)">Supprimer</button>
     </td>
   </tr>

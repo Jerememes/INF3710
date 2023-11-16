@@ -82,6 +82,16 @@ let DatabaseController = class DatabaseController {
                 }
             }
         }));
+        router.get('/medecins/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params.id;
+                const medecin = yield this.databaseService.query(`SELECT * FROM Medecins WHERE idmedecin = ${id}`);
+                res.json(medecin);
+            }
+            catch (err) {
+                res.status(500).send({ message: 'Error fetching data', error: err.message });
+            }
+        }));
         router.delete('/medecins/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = req.params.id;

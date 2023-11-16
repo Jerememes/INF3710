@@ -12,5 +12,6 @@
     <option *ngFor="let service of services" [value]="service.idservice">{{service.idservice}} - {{ service.nomservice }}</option>
   </select>
 
-  <button type="submit">Add Doctor</button>
+  <button *ngIf="doctorData === null" type="submit">Ajouter</button>
+  <button *ngIf="doctorData" type="submit">Modifer</button>
 </form>

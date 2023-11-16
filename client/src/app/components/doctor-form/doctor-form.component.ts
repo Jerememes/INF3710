@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MedecinService } from '../../services/medecin.service';
 import { Doctor } from '../../interfaces/doctor.interface';
 import { Service } from '../../interfaces/service.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-form',
@@ -10,6 +11,8 @@ import { Service } from '../../interfaces/service.interface';
   styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent {
+  @Input() doctorData: Doctor | null = null;
+
   doctorForm: FormGroup;
   specialities: string[] = ['Dermatologie', 'Neurologie', 'Ophtalmologie', 'Orthopédie', 'Psychiatrie', 'Cardiologie', 'Pédiatrie', 'Chirurgie', 'Gynécologie', 'Radiologie'];
   services: Service[] = [
@@ -54,8 +57,13 @@ export class DoctorFormComponent {
       "nomservice": "Radiologie"
     }
   ]
-  router: any;
-  constructor(private fb: FormBuilder, private medecinService: MedecinService) {
+
+  constructor(
+    private fb: FormBuilder,
+    private medecinService: MedecinService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     this.doctorForm = this.fb.group({
       prenom: ['', [Validators.required]],
       nom: ['', [Validators.required]],
@@ -63,21 +71,26 @@ export class DoctorFormComponent {
       anneesexperience: [0, [Validators.required, Validators.min(0)]],
       idservice: [this.services.length > 0 ? this.services[0].idservice : null, [Validators.required]]
     });
+  }
 
-    this.medecinService.getMedecins().subscribe((data: any[]) => {
-      this.doctorForm.setValue({
-        prenom: 'John',
-        nom: 'Doe',
-        specialite: this.specialities[0],
-        anneesexperience: 5,
-        idservice: 1
-      });
-    });
+  ngOnInit(): void {
+    this.route.url.subscribe((segments) => {
+      const isCreationMode = segments.some((segment) => segment.path === 'creation-medecin');
+      if (isCreationMode) {
+        this.doctorData = null;
+      }
+      
+      if (this.doctorData) {
+        this.doctorForm.patchValue(this.doctorData);
+      }
 
-    this.medecinService.getServices().subscribe((services: Service[]) => {
-      this.services = services;
-      this.doctorForm.patchValue({
-        idservice: services.length > 0 ? services[0].idservice : null
+      this.medecinService.getServices().subscribe((services: Service[]) => {
+        this.services = services;
+        if (!this.doctorData) {
+          this.doctorForm.patchValue({
+            idservice: services.length > 0 ? services[0].idservice : null
+          });
+        }
       });
     });
   }
@@ -86,23 +99,43 @@ export class DoctorFormComponent {
     if (this.doctorForm.valid) {
       const newDoctor: Doctor = this.doctorForm.value;
   
-      // Use the fetch method to send a POST request with the newDoctor data
-      fetch('http://localhost:3000/database/medecins', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newDoctor)
-      })
-      .then(response => response.json())
-      .then(data => {
-        alert(`Doctor ${data.prenom} ${data.nom} added successfully.`);
-        this.router.navigate(['/table-medecin']);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('There was an error adding the doctor.');
-      });
+      if (this.doctorData) {
+        newDoctor.idmedecin = this.doctorData.idmedecin;
+        fetch('http://localhost:3000/database/medecins', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newDoctor)
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(`Doctor ${data.prenom} ${data.nom} updated successfully.`);
+          this.router.navigate(['/table-medecin']);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('There was an error updating the doctor.');
+        });
+      }
+      else {
+        fetch('http://localhost:3000/database/medecins', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newDoctor)
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(`Doctor ${data.prenom} ${data.nom} added successfully.`);
+          this.router.navigate(['/table-medecin']);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('There was an error adding the doctor.');
+        });
+      }
     } else {
       alert('Please fill in all the required fields.');
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // Import the Router service
 import { MedecinService } from '../../services/medecin.service';
 
 @Component({
@@ -9,7 +10,10 @@ import { MedecinService } from '../../services/medecin.service';
 export class TableMedecinComponent implements OnInit {
   medecins: any[] = [];
 
-  constructor(private medecinService: MedecinService) { }
+  constructor(
+    private medecinService: MedecinService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.medecinService.getMedecins().subscribe((data: any[]) => {
@@ -30,11 +34,6 @@ export class TableMedecinComponent implements OnInit {
   }
 
   updateMedecin(id: number) {
-    this.medecinService.updateMedecin(id).subscribe(() => {
-      this.medecins = this.medecins.filter(medecin => medecin.idmedecin !== id);
-    },
-    error => {
-      console.error('Error updating medecin', error);
-    });
+    this.router.navigate(['modify-medecin', id]);
   }
 }

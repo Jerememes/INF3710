@@ -12,6 +12,7 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { TableMedecinComponent } from './pages/table-medecin/table-medecin.component';
 import { CreationMedecinComponent } from './pages/creation-medecin/creation-medecin.component';
 import { DoctorFormComponent } from './components/doctor-form/doctor-form.component';
+import { ModifyMedecinComponent } from './pages/modify-medecin/modify-medecin.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { DoctorFormComponent } from './components/doctor-form/doctor-form.compon
     TableMedecinComponent,
     CreationMedecinComponent,
     DoctorFormComponent,
+    ModifyMedecinComponent,
   ],
   imports: [
     CommonModule,

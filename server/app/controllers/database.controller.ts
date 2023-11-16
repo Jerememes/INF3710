@@ -61,7 +61,16 @@ export class DatabaseController {
           }
       }
     });
-    
+
+    router.get('/medecins/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+        const medecin = await this.databaseService.query(`SELECT * FROM Medecins WHERE idmedecin = ${id}`);
+        res.json(medecin);
+      } catch (err) {
+        res.status(500).send({ message: 'Error fetching data', error: err.message });
+      }
+    });
 
     router.delete('/medecins/:id', async (req, res) => {
       try {
