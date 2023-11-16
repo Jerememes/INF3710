@@ -4,12 +4,12 @@
   </div>
   <table>
     <tr>
-      <th>Id</th>
-      <th>Prénom</th>
-      <th>Nom</th>
-      <th>Spécialité</th>
-      <th>Années d'expérience</th>
-      <th>Id services</th>
+      <th (click)="sortByKey('idmedecin')">Id <span *ngIf="currentSortKey === 'idmedecin'" class="sort-indicator">{{ sortAscending ? '▲' : '▼' }}</span></th>
+      <th (click)="sortByKey('prenom')">Prénom <span *ngIf="currentSortKey === 'prenom'">{{ sortAscending ? '▲' : '▼' }}</span></th>
+      <th (click)="sortByKey('nom')">Nom <span *ngIf="currentSortKey === 'nom'">{{ sortAscending ? '▲' : '▼' }}</span></th>
+      <th (click)="sortByKey('specialite')">Spécialité <span *ngIf="currentSortKey === 'specialite'">{{ sortAscending ? '▲' : '▼' }}</span></th>
+      <th (click)="sortByKey('anneesexperience')">Années d'expérience <span *ngIf="currentSortKey === 'anneesexperience'">{{ sortAscending ? '▲' : '▼' }}</span></th>
+      <th (click)="sortByKey('idservice')">Id services <span *ngIf="currentSortKey === 'idservice'">{{ sortAscending ? '▲' : '▼' }}</span></th>
       <th>Actions</th>
     </tr>
     <tr *ngFor="let medecin of medecins">
