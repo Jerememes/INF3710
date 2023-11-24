@@ -1,17 +1,17 @@
 <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
   <label for="prenom">Prénom</label>
-  <input formControlName="prenom" placeholder={{doctorData.prenom}} type="text">
+  <input formControlName="prenom" placeholder={{doctorData?.prenom}} type="text">
   <label for="nom">Nom</label>
-  <input formControlName="nom" placeholder={{doctorData.nom}} type="text">
+  <input formControlName="nom" placeholder={{doctorData?.nom}} type="text">
   <label for="specialite">Spécialité</label>
-  <select formControlName="specialite" >
+  <select formControlName="specialite">
     <option *ngFor="let speciality of specialities" [value]="speciality">{{ speciality }}</option>
   </select>
   <label for="anneesexperience">Années d'expérience</label>
-  <input formControlName="anneesexperience" placeholder={{doctorData.anneesexperience}} type="number">
+  <input formControlName="anneesexperience" placeholder={{doctorData?.anneesexperience}} type="number">
   <label for="idservice">Service</label>
   <select formControlName="idservice">
-    <option *ngFor="let service of services" [value]="service.idservice">{{service.idservice}} - {{ service.nomservice }}</option>
+    <option *ngFor="let service of services" [value]="service.idservice">{{ service.nomservice }}</option>
   </select>
 
   <button *ngIf="doctorData === null" type="submit">Ajouter</button>

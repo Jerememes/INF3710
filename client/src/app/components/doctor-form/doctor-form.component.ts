@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MedecinService } from '../../services/medecin.service';
 import { Doctor } from '../../interfaces/doctor.interface';
@@ -10,86 +10,50 @@ import { Router } from '@angular/router';
   templateUrl: './doctor-form.component.html',
   styleUrls: ['./doctor-form.component.css']
 })
-export class DoctorFormComponent {
-  @Input() doctorData: Doctor = {
-    prenom: "Prénom",
-    nom: "Nom",
-    specialite: "Spécialité",
-    anneesexperience: 999,
-    idservice: 999,
-  };
+export class DoctorFormComponent implements OnChanges {
+  @Input() doctorData?: Doctor;
 
   doctorForm: FormGroup;
   specialities: string[] = ['Dermatologie', 'Neurologie', 'Ophtalmologie', 'Orthopédie', 'Psychiatrie', 'Cardiologie', 'Pédiatrie', 'Chirurgie', 'Gynécologie', 'Radiologie'];
-  services: Service[] = [
-    {
-      "idservice": 0,
-      "nomservice": "Dermatologie"
-    },
-    {
-      "idservice": 1,
-      "nomservice": "Neurologie"
-    },
-    {
-      "idservice": 2,
-      "nomservice": "Ophtalmologie"
-    },
-    {
-      "idservice": 3,
-      "nomservice": "Orthopédie"
-    },
-    {
-      "idservice": 4,
-      "nomservice": "Psychiatrie"
-    },
-    {
-      "idservice": 5,
-      "nomservice": "Cardiologie"
-    },
-    {
-      "idservice": 6,
-      "nomservice": "Pédiatrie"
-    },
-    {
-      "idservice": 7,
-      "nomservice": "Chirurgie"
-    },
-    {
-      "idservice": 8,
-      "nomservice": "Gynécologie"
-    },
-    {
-      "idservice": 9,
-      "nomservice": "Radiologie"
-    }
-  ]
+  services: Service[] = [];
 
   constructor(
     private fb: FormBuilder,
     private medecinService: MedecinService,
     private router: Router,
   ) {
-    this.doctorForm = this.fb.group({
-      prenom: [this.doctorData?.prenom, [Validators.required]],
-      nom: [this.doctorData?.nom, [Validators.required]],
-      specialite: [this.doctorData?.specialite, [Validators.required]],
-      anneesexperience: [0, [Validators.required, Validators.min(0)]],
-      idservice: [this.services.length > 0 ? this.services[0].idservice : null, [Validators.required]]
+      this.doctorForm = this.fb.group({
+        prenom: ['', [Validators.required]],
+        nom: ['', [Validators.required]],
+        specialite: ['', [Validators.required]],
+        anneesexperience: [0, [Validators.required, Validators.min(0)]],
+        idservice: [null, [Validators.required]]
+      });
+    }
+
+  initializeForm(doctorData: Doctor | null): void {
+    this.doctorForm.setValue({
+      prenom: doctorData?.prenom || '',
+      nom: doctorData?.nom || '',
+      specialite: doctorData?.specialite || this.specialities[0],
+      anneesexperience: doctorData?.anneesexperience || 0,
+      idservice: doctorData?.idservice || (this.services[0]?.idservice || null)
     });
   }
 
   ngOnInit(): void {
     this.medecinService.getServices().subscribe((services: Service[]) => {
       this.services = services;
-      
       if (this.doctorData) {
-        this.doctorForm.patchValue(this.doctorData);
-      } else {
-        this.doctorForm.patchValue({
-          idservice: services.length > 0 ? services[0].idservice : null
-        });
+        this.initializeForm(this.doctorData);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.doctorData && this.doctorData) {
+      this.initializeForm(this.doctorData);
+    }
   }
 
   onSubmit(): void {
