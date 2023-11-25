@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class DoctorFormComponent implements OnChanges {
   @Input() doctorData?: Doctor;
-
   doctorForm: FormGroup;
   specialities: string[] = ['Dermatologie', 'Neurologie', 'Ophtalmologie', 'Orthopédie', 'Psychiatrie', 'Cardiologie', 'Pédiatrie', 'Chirurgie', 'Gynécologie', 'Radiologie'];
   services: Service[] = [];
