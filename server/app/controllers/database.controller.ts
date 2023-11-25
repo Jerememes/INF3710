@@ -82,16 +82,49 @@ export class DatabaseController {
       }
     });
 
+    // @ts-ignore
     router.put('/medecins/:id', async (req, res) => {
       try {
-        const id = req.params.id;
-        const result = await this.databaseService.query(`UPDATE Medecins SET idservice = 0 WHERE idmedecin = ${id}`);
-        res.json(result);
+        const { prenom, nom, specialite, anneesexperience, idservice } = req.body;
+        const id = parseInt(req.params.id, 10);
+        
+        if (isNaN(id) || id < 1) {
+          return res.status(400).json({ message: 'Invalid ID provided' });
+        }
+    
+        const updateQuery = `
+          UPDATE Medecins
+          SET prenom = $1, nom = $2, specialite = $3, anneesExperience = $4, idService = $5
+          WHERE idMedecin = $6
+        `;
+    
+        const values = [prenom, nom, specialite, anneesexperience, idservice, id];
+        const updateResult = await this.databaseService.query(updateQuery, values);
+        
+        console.log('Update result:', updateResult); // Debugging log
+    
+        // Check if updateResult has the property rowCount
+        if (!('rowCount' in updateResult) || updateResult.rowCount === 0) {
+          return res.status(404).json({ message: 'No record found with the provided ID.' });
+        }
+    
+        // Fetch and return the updated record
+        const selectResult = await this.databaseService.query('SELECT * FROM Medecins WHERE idMedecin = $1', [id]);
+        
+        console.log('Select result:', selectResult); // Debugging log
+    
+        // Check if selectResult has the property rows and it's not empty
+        if (!('rows' in selectResult) || selectResult.rows.length === 0) {
+          return res.status(404).json({ message: 'Updated record not found.' });
+        }
+    
+        res.json(selectResult.rows[0]);
       } catch (err) {
-        res.status(500).send({ message: 'Error updating data', error: err.message });
+        console.error('Error during database operation:', err); // More detailed error logging
+        res.status(500).json({ message: 'Error updating data', error: err.message });
       }
     });
-
+    
     router.get('/services', async (req, res) => {
       try {
         const services = await this.databaseService.query('SELECT * FROM Services');

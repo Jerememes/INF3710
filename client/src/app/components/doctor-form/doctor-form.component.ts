@@ -87,8 +87,7 @@ export class DoctorFormComponent implements OnChanges {
           body: JSON.stringify(newDoctor)
         })
         .then(response => response.json())
-        .then(data => {
-          alert(`Doctor ${data.prenom} ${data.nom} added successfully.`);
+        .then(() => {
           this.router.navigate(['/table-medecin']);
         })
         .catch(error => {

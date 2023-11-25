@@ -65,25 +65,28 @@ export class ModifyMedecinComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Attempting to submit form');
+    console.log('Form status:', this.doctorForm.status);
+    console.log('Form values:', this.doctorForm.value);
     if (this.doctorForm.valid) {
       const updatedDoctor: Doctor = this.doctorForm.value;
-  
-      if (this.doctorData && this.doctorData.idmedecin) {
-        updatedDoctor.idmedecin = this.doctorData.idmedecin;
-        this.http.put(`http://localhost:3000/database/medecins/${this.doctorData.idmedecin}`, updatedDoctor)
+      const idmedecin = this.route.snapshot.paramMap.get('id');
+      if (updatedDoctor) {
+        this.http.put(`http://localhost:3000/database/medecins/${idmedecin}`, updatedDoctor)
           .subscribe({
-            next: (response) => {
+            next: () => {
               alert(`Doctor ${updatedDoctor.prenom} ${updatedDoctor.nom} updated successfully.`);
-              this.router.navigate(['/table-medecin']);
             },
             error: (error) => {
-              console.error('Error:', error);
-              alert('There was an error updating the doctor.');
-            }
+              console.error('Full error:', error);            }
           });
+      } else {
+        console.error('Invalid doctor data:', updatedDoctor);
       }
     } else {
       alert('Please fill in all the required fields.');
     }
+    this.router.navigate(['/table-medecin']);
   }
+  
 }

@@ -1,4 +1,3 @@
-import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as cors from "cors";
 import * as express from "express";
@@ -21,9 +20,9 @@ export class Application {
   private config(): void {
     // Middlewares configuration
     this.app.use(logger("dev"));
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cors());
   }
 
